@@ -1,0 +1,211 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div style="text-align:center">
+  <h1>
+    Welcome to {{ title }}!
+  </h1>  
+</div>
+
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" id="borrower-tab" [attr.data-toggle]="enableBorrowerTab == true ? 'tab' : ''" href="#home" role="tab" aria-controls="home" aria-selected="true">Borrower Info</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" [attr.data-toggle]="enableCoBorrowerTab == true ? 'tab' : ''" id="co-borrower-tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Co-Borrower Info</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" [attr.data-toggle]="enablePropertyInfo == true ? 'tab' : ''" id="property-info-tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Property Info</a>
+  </li>
+</ul>
+
+
+<div class="tab-content" id="myTabContent">
+  <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="borrower-tab">
+    <form #borrowerForm="ngForm">
+      <div class="card">
+        <div class="card-header">
+          <h2>Borrower Info</h2>
+        </div>
+        
+        <div class="card-body">
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-sm-5 col-md-3">
+                <label for="firstname">First Name: {{firstName}}</label>
+              </div>
+                <div class="col-12 col-sm-5 col-md-3">
+                <input [(ngModel)]="firstName" name="firstName" type="text" id="firstname" required minlength="3" #inputfirstName="ngModel">
+
+                <div *ngIf="inputfirstName.invalid && (inputfirstName.dirty || inputfirstName.touched)"
+                class="alert alert-danger">
+            
+                  <div *ngIf="inputfirstName.errors.required">
+                    First Name is required.
+                  </div>
+                  <div *ngIf="inputfirstName.errors.minlength">
+                    First Name must be at least 3 characters long.
+                  </div>
+                </div>
+
+              </div>
+              <div class="col-12 col-sm-5 col-md-3">
+                <label for="lastname">Last Name: {{lastName}} </label>
+              </div>
+              <div class="col-12 col-sm-5 col-md-3">
+                <input [(ngModel)]="lastName"  name="lastName" type="text" id="lastname" #inputLastName="ngModel" required minlength="3">
+
+                <div  *ngIf="inputLastName.invalid && (inputLastName.dirty || inputLastName.touched)"
+                class="alert alert-danger">
+            
+                  <div *ngIf="inputLastName.errors.required">
+                    Last Name is required.
+                  </div>
+                  <div *ngIf="inputLastName.errors.minlength">
+                    Last Name must be at least 3 characters long.
+                  </div>
+                </div>
+              </div>
+            </div>
+      
+            <div class="row">
+              <div class="col-12 col-sm-5 col-md-3">
+                  <label for="businessname" placeholder="Optional">Business Name: {{businessName}}</label>
+              </div>
+              <div class="col-12 col-sm-5 col-md-3">
+                  <input [(ngModel)]="businessName" name="businessName" type="text" id="businessname">
+              </div>
+              <div class="col-12 col-sm-5 col-md-3">
+                  <label for="email">Email Address: {{email}}</label>
+              </div>
+              <div class="col-12 col-sm-5 col-md-3">
+                  <input [(ngModel)]="email" name="email" type="email" id="email" >
+                  <small id="emailHelp" class="form-text text-muted">Please make sure your email includes an @ and a period.</small>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-12 col-sm-5 col-md-3">
+                <label for="street">Street Address: {{street}}</label>
+              </div>
+              <div class="col-12 col-sm-5 col-md-3">
+                <input [(ngModel)]="street" name="street" type="text"  id="street" >
+              </div>
+              <div class="col-12 col-sm-5 col-md-3">
+                <label for="city">City: {{city}}</label>
+              </div>
+              <div class="col-12 col-sm-5 col-md-3">
+                <input [(ngModel)]="city" name="city" type="text" id="txtCity" class="city">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-12 col-sm-5 col-md-3">
+                <label for="zipcode">ZIP Code: {{zipCode}}</label>
+              </div>
+              <div class="col-12 col-sm-5 col-md-3">
+                <input [(ngModel)]="zipCode" name="zipCode" type="text" id="zipcode">
+              </div>
+              <div class="col-12 col-sm-5 col-md-3">
+                <label for="state">State</label>
+              </div>
+              <div class="col-12 col-sm-5 col-md-3">
+                <input type="text" id="state">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-12 col-sm-5 col-md-3">
+                <label for="phone">Phone: {{phone}}</label>
+              </div>
+              <div class="col-12 col-sm-5 col-md-3">
+                <input [(ngModel)]="phone" name="phone" id="phone"  placeholder="(   )   -    ">
+              </div>
+              
+            </div>
+      
+            <div class="row">
+              <div class="col">
+                <h3>Will anyone else be on the loan or lease?  {{isCoBorrower}}</h3>
+                <input type="radio" name="isCoBorrower" id="rbOtherBorrower" [(ngModel)] = "isCoBorrower"  value="no"> No
+                <input type="radio" name="isCoBorrower" id="rbOtherBorrower" [(ngModel)] = "isCoBorrower" value="yes"> Yes
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">{{enableCoBorrowerTab}} || {{enablePropertyInfo}}
+            <button (click)="moveNextTab()" class="float-right" [disabled]="!borrowerForm.valid" >Next</button>
+          </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="co-borrower-tab">
+      <div class="card"> 
+        <div class="card-header">
+          <h3>Co-Borrower Info</h3>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col">
+              <h3>Is the co-borrower the spouse of the primary borrower?</h3>
+                <label><input value="rbIsNotSpouse" name="IsSpouse" type="radio" id="rbIsNotSpouse"  checked="checked"> No</label>
+                <label><input value="rbIsSpouse" name="IsSpouse" type="radio" id="rbIsSpouse"> Yes</label>              
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+                <button (click)="NextTabPropertyInfo()" class="float-right" >Next</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> 
+
+  <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="property-info-tab">
+    <form #propertyInfoForm="ngForm">
+      <div class="card">
+          <div class="card-header">
+            <h2>Property Info (if applicable)</h2>
+          </div>
+          <div class="card-body">
+              <div class="row">
+                <div class="col-4">
+                    <label for="piCity">City {{piCity}}</label>
+                </div>
+                <div class="col">
+                  <input [(ngModel)]="piCity" #inputPiCity="ngModel"  name="piCity" type="text" required>
+                  <div *ngIf="inputPiCity.errors?.required">
+                      City is required.
+                    </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-4">
+                  <label for="pi-state">State {{piState}}</label>
+                </div>     
+                <div class="col" >
+                    <select  [(ngModel)]="piState" name="piState">
+                    <option selected="selected" value="">Select a State</option>
+                    <option value="AK">Alaska</option>
+                    <option value="AZ">Arizona</option>
+                    <option value="AR">Arkansas</option>
+                    <option value="CA">California</option>
+                    <option value="CO">Colorado</option>
+                    <option value="CT">Connecticut</option>
+                    </select>      
+                  </div>
+            </div>      
+            <div class="row">
+              <div class="col">
+                  <button (click)="save()" class="float-right" [disabled]="!propertyInfoForm.valid">Save</button>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+    </form>
+  </div>
+</div>
